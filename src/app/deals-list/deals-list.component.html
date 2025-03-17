@@ -1,0 +1,39 @@
+<h1 class="text-primary text-center border-5 mt-5 mb-5 fw-bold">DEALS LIST</h1>
+
+<div class="container mt-10">
+  <div class="row align-items-stretch">
+    <div *ngFor="let deal of deals" class="col-md-2 mb-4">
+      <div
+        class="card d-flex flex-column"
+        style="width: 200px; min-height: 300px"
+      >
+        <div class="card-body">
+          <h5 class="card-title">{{ deal.name }}</h5>
+          <p class="card-text">{{ deal.title }}</p>
+        </div>
+        <ul
+          class="list-group list-group-flush d-flex flex-column justify-content-between"
+        >
+          <li class="list-group-item">{{ deal.slug }}</li>
+        </ul>
+        <img
+          [src]="'http://localhost:5011' + deal.image"
+          class="card-img-top"
+          alt="{{ deal.title }}"
+          style="height: 150px; object-fit: cover"
+        />
+        <div class="card-footer d-flex gap-3">
+          <button
+            class="btn btn-primary btn-md p-4"
+            (click)="updateDeals(deal.id)"
+          >
+            Edit
+          </button>
+          <button class="btn btn-danger btn-md" (click)="deleteDeals(deal.id)">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

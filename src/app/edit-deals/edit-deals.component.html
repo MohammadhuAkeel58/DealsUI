@@ -1,0 +1,70 @@
+<h1 class="text-primary text-center border-5 mt-5 mb-5 fw-bold">EDIT DEALS</h1>
+
+<div class="container">
+  <div class="card shadow-lg p-4">
+    <form [formGroup]="dealForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="name" class="form-label fw-bold">Name:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          placeholder="Enter deal name"
+          formControlName="name"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="title" class="form-label fw-bold">Title:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="title"
+          placeholder="Enter deal title"
+          formControlName="title"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="slug" class="form-label fw-bold">Slug:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="slug"
+          placeholder="Enter deal slug"
+          formControlName="slug"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="image" class="form-label fw-bold">Image:</label>
+        <input
+          type="file"
+          class="form-control"
+          id="image"
+          formControlName="imageFile"
+          accept="image/*"
+          (change)="onFileSelected($event)"
+        />
+      </div>
+      <div class="mb-3 text-center" *ngIf="imagePreview">
+        <img
+          [src]="imagePreview"
+          alt="Selected Image"
+          class="img-thumbnail"
+          style="max-width: 200px; max-height: 200px"
+        />
+      </div>
+
+      <div class="text-center">
+        <button
+          type="submit"
+          [disabled]="dealForm.invalid"
+          class="btn btn-primary w-100"
+        >
+          Update Deal
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
