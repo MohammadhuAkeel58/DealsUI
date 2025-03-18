@@ -9,6 +9,7 @@ import {
 import { DealService } from '../services/deal.service';
 import { DealsInterface } from '../models/deals-interface';
 import { CommonModule } from '@angular/common';
+import { ImageInterface } from '../models/image-interface';
 
 @Component({
   selector: 'app-edit-deals',
@@ -65,6 +66,7 @@ export class EditDealsComponent implements OnInit {
       }
 
       this.selectedFile = file;
+      console.log('select', this.selectedFile);
 
       const reader = new FileReader();
       reader.onload = (e: any) => {
@@ -72,6 +74,16 @@ export class EditDealsComponent implements OnInit {
       };
       reader.readAsDataURL(file);
     }
+    const imageData: ImageInterface = {
+      id: this.dealId,
+      imageFile: this.selectedFile || undefined,
+    };
+    this.dealService.updateImage(this.dealId, imageData).subscribe({
+      next: (response) => {
+        console.log('Image Updated:', response);
+      },
+      error: (err) => console.error('Error updating deal:', err),
+    });
   }
 
   onSubmit() {
@@ -82,7 +94,6 @@ export class EditDealsComponent implements OnInit {
       name: this.dealForm.value.name,
       slug: this.dealForm.value.slug,
       title: this.dealForm.value.title,
-      imageFile: this.selectedFile || undefined,
     };
 
     this.dealService.updateDeals(this.dealId, dealData).subscribe({

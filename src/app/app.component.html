@@ -1,21 +1,25 @@
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark w-100">
   <div class="container-fluid">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#mynavbar"
+      aria-controls="mynavbar"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
     <div class="collapse navbar-collapse" id="mynavbar">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link" routerLink="create-deal">AddDeals</a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link" routerLink="deals-list">Deals</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="edit-deals/:id">Edit</a>
         </li>
       </ul>
     </div>
   </div>
 </nav>
 
-<div class="container">
-  <router-outlet> </router-outlet>
-</div>
+<router-outlet></router-outlet>

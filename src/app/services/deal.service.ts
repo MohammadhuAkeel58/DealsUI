@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { catchError, Observable, throwError } from 'rxjs';
 import { DealsInterface } from '../models/deals-interface';
+import { ImageInterface } from '../models/image-interface';
 
 @Injectable({
   providedIn: 'root',
@@ -43,17 +44,19 @@ export class DealService {
   }
 
   updateDeals(id: number, deal: DealsInterface): Observable<any> {
-    const dealData = new FormData();
-    dealData.append('name', deal.name);
-    dealData.append('slug', deal.slug);
-    dealData.append('title', deal.title);
+    return this.httpClient
+      .put(`${this.apiURL}/${id}`, deal, this.httpOptions)
+      .pipe(catchError(this.errorHandler));
+  }
 
-    if (deal.imageFile) {
-      dealData.append('imageFile', deal.imageFile);
+  updateImage(id: number, image: ImageInterface): Observable<any> {
+    const imageData = new FormData();
+    if (image.imageFile) {
+      imageData.append('imageFile', image.imageFile);
     }
 
     return this.httpClient
-      .put(`${this.apiURL}/update/${id}`, dealData, this.httpOptions)
+      .put(`${this.apiURL}/update/${id}`, imageData, this.httpOptions)
       .pipe(catchError(this.errorHandler));
   }
 

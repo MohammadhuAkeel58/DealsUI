@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { DealsInterface } from '../models/deals-interface';
 import { DealService } from '../services/deal.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-deals-list',
@@ -23,10 +23,16 @@ export class DealsListComponent implements OnInit {
   updateDeals(id: number) {
     this.router.navigate(['/edit-deals', id]);
   }
+  AddDeals() {
+    this.router.navigate(['/create-deal']);
+  }
 
   deleteDeals(id: number) {
-    this.dealService.deleteDeals(id).subscribe((res) => {
-      this.deals = this.deals.filter((item) => item.id !== id);
-    });
+    if (confirm('Are you sure want to Dellete This File?')) {
+      this.dealService.deleteDeals(id).subscribe((res) => {
+        this.deals = this.deals.filter((item) => item.id !== id);
+      });
+    }
+    alert('Delete Successfull');
   }
 }

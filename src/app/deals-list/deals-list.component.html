@@ -1,39 +1,62 @@
-<h1 class="text-primary text-center border-5 mt-5 mb-5 fw-bold">DEALS LIST</h1>
-
-<div class="container mt-10">
-  <div class="row align-items-stretch">
-    <div *ngFor="let deal of deals" class="col-md-2 mb-4">
-      <div
-        class="card d-flex flex-column"
-        style="width: 200px; min-height: 300px"
-      >
-        <div class="card-body">
-          <h5 class="card-title">{{ deal.name }}</h5>
-          <p class="card-text">{{ deal.title }}</p>
-        </div>
-        <ul
-          class="list-group list-group-flush d-flex flex-column justify-content-between"
-        >
-          <li class="list-group-item">{{ deal.slug }}</li>
-        </ul>
-        <img
-          [src]="'http://localhost:5011' + deal.image"
-          class="card-img-top"
-          alt="{{ deal.title }}"
-          style="height: 150px; object-fit: cover"
-        />
-        <div class="card-footer d-flex gap-3">
-          <button
-            class="btn btn-primary btn-md p-4"
-            (click)="updateDeals(deal.id)"
-          >
-            Edit
-          </button>
-          <button class="btn btn-danger btn-md" (click)="deleteDeals(deal.id)">
-            Delete
-          </button>
-        </div>
-      </div>
+<div class="container">
+  <div class="row align-items-center justify-content-between mt-5 mb-5">
+    <div class="col-12 col-md-6">
+      <h1 class="text-primary border-5 fw-bold text-center text-md-start">
+        DEALS LIST
+      </h1>
     </div>
+    <div class="col-12 col-md-6 text-center text-md-end">
+      <button class="btn btn-primary px-4 py-3" (click)="AddDeals()">
+        Add Deals
+      </button>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table">
+      <thead class="table-primary">
+        <tr>
+          <th>No</th>
+          <th>Name</th>
+          <th>Slug</th>
+          <th>Title</th>
+          <th>Image</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let deal of deals; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ deal.name }}</td>
+          <td>{{ deal.slug }}</td>
+          <td>{{ deal.title }}</td>
+          <td>
+            <img
+              [src]="'http://localhost:5011' + deal.image"
+              alt="{{ deal.title }}"
+              class="img-fluid"
+              style="height: 50px; width: 50px; object-fit: cover"
+            />
+          </td>
+          <td>
+            <button
+              class="btn btn-primary btn-sm"
+              (click)="updateDeals(deal.id)"
+            >
+              Edit
+            </button>
+          </td>
+          <td>
+            <button
+              class="btn btn-danger btn-sm"
+              (click)="deleteDeals(deal.id)"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
