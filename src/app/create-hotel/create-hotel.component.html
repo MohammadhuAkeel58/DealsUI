@@ -1,38 +1,63 @@
-<form [formGroup]="hotelForm" (ngSubmit)="onSubmit()">
-  <div>
-    <label for="dealId">Deal ID</label>
-    <input
-      id="dealId"
-      formControlName="dealId"
-      type="number"
-      placeholder="Enter Deal ID"
-    />
+<h1 class="text-primary text-center border-5 mt-5 mb-5 fw-bold">
+  CREATE HOTEL
+</h1>
+
+<div class="container">
+  <div class="card shadow-lg p-4">
+    <form [formGroup]="hotelForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="dealId" class="form-label fw-bold">Deal ID:</label>
+        <input
+          type="number"
+          class="form-control"
+          id="dealId"
+          placeholder="Enter Deal ID"
+          formControlName="dealId"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="name" class="form-label fw-bold">Hotel Name:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          placeholder="Enter Hotel Name"
+          formControlName="name"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="location" class="form-label fw-bold">Location:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="location"
+          placeholder="Enter Location"
+          formControlName="location"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="description" class="form-label fw-bold">Description:</label>
+        <textarea
+          class="form-control"
+          id="description"
+          formControlName="description"
+          placeholder="Enter Description"
+          rows="3"
+        ></textarea>
+      </div>
+
+      <div class="text-center">
+        <button
+          type="submit"
+          [disabled]="hotelForm.invalid"
+          class="btn btn-primary w-100 mt-3"
+        >
+          Add Hotel
+        </button>
+      </div>
+    </form>
   </div>
-  <div>
-    <label for="name">Hotel Name</label>
-    <input
-      id="name"
-      formControlName="name"
-      type="text"
-      placeholder="Enter Hotel Name"
-    />
-  </div>
-  <div>
-    <label for="location">Location</label>
-    <input
-      id="location"
-      formControlName="location"
-      type="text"
-      placeholder="Enter Location"
-    />
-  </div>
-  <div>
-    <label for="description">Description</label>
-    <textarea
-      id="description"
-      formControlName="description"
-      placeholder="Enter Description"
-    ></textarea>
-  </div>
-  <button type="submit" [disabled]="hotelForm.invalid">Add Hotel</button>
-</form>
+</div>
