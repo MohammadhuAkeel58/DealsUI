@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { catchError, Observable, throwError } from 'rxjs';
-import { DealsInterface } from '../models/deals-interface';
+import { DealsInterface, HotelInterface } from '../models/deals.model';
 import { ImageInterface } from '../models/image-interface';
 
 @Injectable({
@@ -30,9 +30,24 @@ export class DealService {
     if (deal.imageFile) {
       dealData.append('imageFile', deal.imageFile);
     }
-
+    if (deal.hotels) {
+      deal.hotels.forEach((hotel, index) => {
+        dealData.append(`Hotels[${index}].Name`, hotel.name);
+        dealData.append(`Hotels[${index}].Location`, hotel.location);
+        dealData.append(
+          `Hotels[${index}].Description`,
+          hotel.description || ''
+        );
+      });
+    }
     return this.httpClient
       .post(this.apiURL, dealData, this.httpOptions)
+      .pipe(catchError(this.errorHandler));
+  }
+
+  createHotels(hotel: HotelInterface): Observable<any> {
+    return this.httpClient
+      .post('http://localhost:5011/api/hotel', hotel, this.httpOptions)
       .pipe(catchError(this.errorHandler));
   }
 

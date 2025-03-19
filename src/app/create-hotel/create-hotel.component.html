@@ -1,0 +1,38 @@
+<form [formGroup]="hotelForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="dealId">Deal ID</label>
+    <input
+      id="dealId"
+      formControlName="dealId"
+      type="number"
+      placeholder="Enter Deal ID"
+    />
+  </div>
+  <div>
+    <label for="name">Hotel Name</label>
+    <input
+      id="name"
+      formControlName="name"
+      type="text"
+      placeholder="Enter Hotel Name"
+    />
+  </div>
+  <div>
+    <label for="location">Location</label>
+    <input
+      id="location"
+      formControlName="location"
+      type="text"
+      placeholder="Enter Location"
+    />
+  </div>
+  <div>
+    <label for="description">Description</label>
+    <textarea
+      id="description"
+      formControlName="description"
+      placeholder="Enter Description"
+    ></textarea>
+  </div>
+  <button type="submit" [disabled]="hotelForm.invalid">Add Hotel</button>
+</form>

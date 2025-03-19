@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { DealsInterface } from '../models/deals-interface';
+import { DealsInterface } from '../models/deals.model';
 import { DealService } from '../services/deal.service';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-deals-list',
@@ -25,6 +25,10 @@ export class DealsListComponent implements OnInit {
   }
   AddDeals() {
     this.router.navigate(['/create-deal']);
+  }
+
+  AddHotels() {
+    this.router.navigate(['/create-hotel']);
   }
 
   deleteDeals(id: number) {

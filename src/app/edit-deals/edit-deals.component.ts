@@ -5,9 +5,10 @@ import {
   FormGroup,
   Validators,
   ReactiveFormsModule,
+  FormArray,
 } from '@angular/forms';
 import { DealService } from '../services/deal.service';
-import { DealsInterface } from '../models/deals-interface';
+import { DealsInterface } from '../models/deals.model';
 import { CommonModule } from '@angular/common';
 import { ImageInterface } from '../models/image-interface';
 
@@ -36,7 +37,28 @@ export class EditDealsComponent implements OnInit {
       slug: ['', Validators.required],
       title: ['', Validators.required],
       imageFile: [null],
+      hotels: this.formb.array([this.createHotelGroup()]),
     });
+  }
+
+  get hotels() {
+    return this.dealForm.get('hotels') as FormArray;
+  }
+
+  createHotelGroup(hotel?: any) {
+    return this.formb.group({
+      name: [hotel?.name || '', Validators.required],
+      location: [hotel?.location || '', Validators.required],
+      description: [hotel?.description || '', Validators.required],
+    });
+  }
+
+  addHotel(hotel?: any) {
+    this.hotels.push(this.createHotelGroup(hotel));
+  }
+
+  removeHotel(index: number) {
+    this.hotels.removeAt(index);
   }
 
   ngOnInit(): void {
@@ -47,6 +69,11 @@ export class EditDealsComponent implements OnInit {
           slug: deal.slug,
           title: deal.title,
         });
+
+        if (deal.hotels) {
+          deal.hotels.forEach((hotel) => this.addHotel(hotel));
+        }
+
         this.imagePreview = deal.image
           ? `http://localhost:5011${deal.image}`
           : null;
@@ -94,6 +121,7 @@ export class EditDealsComponent implements OnInit {
       name: this.dealForm.value.name,
       slug: this.dealForm.value.slug,
       title: this.dealForm.value.title,
+      hotels: this.dealForm.value.hotels,
     };
 
     this.dealService.updateDeals(this.dealId, dealData).subscribe({
