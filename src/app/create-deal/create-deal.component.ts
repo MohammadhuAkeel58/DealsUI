@@ -27,6 +27,7 @@ import { Router } from '@angular/router';
     MatFormFieldModule,
     MatInputModule,
     MatStepperModule,
+    FormsModule,
   ],
   templateUrl: './create-deal.component.html',
   styleUrl: './create-deal.component.css',
@@ -43,14 +44,20 @@ export class CreateDealComponent {
     private router: Router
   ) {
     this.dealForm = this.formb.group({
-      name: ['', Validators.required],
-      slug: ['', Validators.required],
-      title: ['', Validators.required],
-      imageFile: [null],
+      dealInfo: this.formb.group({
+        name: ['', Validators.required],
+        slug: ['', Validators.required],
+        title: ['', Validators.required],
+        imageFile: [null],
+      }),
       hotels: this.formb.array([this.createHotelGroup()]),
     });
   }
   isLinear = false;
+
+  get dealInfoFormGroup(): FormGroup {
+    return this.dealForm.get('dealInfo') as FormGroup;
+  }
 
   get hotels() {
     return this.dealForm.get('hotels') as FormArray;
@@ -93,12 +100,12 @@ export class CreateDealComponent {
 
   onSubmit() {
     if (this.dealForm.invalid) return;
-
+    const dealInfo = this.dealForm.value.dealInfo;
     const dealData: DealsInterface = {
       id: 0,
-      name: this.dealForm.value.name,
-      slug: this.dealForm.value.slug,
-      title: this.dealForm.value.title,
+      name: dealInfo.name,
+      slug: dealInfo.slug,
+      title: dealInfo.title,
       imageFile: this.selectedFile || undefined,
       hotels: this.dealForm.value.hotels,
     };

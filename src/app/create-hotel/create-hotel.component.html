@@ -1,4 +1,4 @@
-<h1 class="text-primary text-center border-5 mt-5 mb-5 fw-bold">
+<!-- <h1 class="text-primary text-center border-5 mt-5 mb-5 fw-bold">
   CREATE HOTEL
 </h1>
 
@@ -58,6 +58,84 @@
           Add Hotel
         </button>
       </div>
+    </form>
+  </div>
+</div> -->
+
+<h1 class="text-primary text-center border-5 mt-5 mb-5 fw-bold">
+  CREATE HOTEL
+</h1>
+
+<div class="container">
+  <div class="card shadow-lg p-4">
+    <button mat-raised-button (click)="isLinear = !isLinear" class="mb-3">
+      {{ !isLinear ? "Enable Linear Mode" : "Disable Linear Mode" }}
+    </button>
+
+    <form [formGroup]="hotelForm">
+      <mat-stepper [linear]="isLinear" #stepper>
+        <mat-step [stepControl]="hotelForm">
+          <ng-template matStepLabel>Hotel Information</ng-template>
+          <div class="mb-3">
+            <label for="dealId" class="form-label fw-bold">Deal ID:</label>
+            <input
+              type="number"
+              class="form-control"
+              id="dealId"
+              placeholder="Enter Deal ID"
+              formControlName="dealId"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="name" class="form-label fw-bold">Hotel Name:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              placeholder="Enter Hotel Name"
+              formControlName="name"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="location" class="form-label fw-bold">Location:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="location"
+              placeholder="Enter Location"
+              formControlName="location"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="description" class="form-label fw-bold"
+              >Description:</label
+            >
+            <textarea
+              class="form-control"
+              id="description"
+              formControlName="description"
+              placeholder="Enter Description"
+              rows="3"
+            ></textarea>
+          </div>
+
+          <div class="text-end">
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </mat-step>
+
+        <mat-step>
+          <ng-template matStepLabel>Review & Submit</ng-template>
+          <p class="text-center">Review your hotel details and submit.</p>
+          <div class="text-center">
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button (click)="onSubmit()">Submit</button>
+          </div>
+        </mat-step>
+      </mat-stepper>
     </form>
   </div>
 </div>

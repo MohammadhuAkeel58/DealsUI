@@ -11,13 +11,25 @@ import { DealService } from '../services/deal.service';
 import { DealsInterface } from '../models/deals.model';
 import { CommonModule } from '@angular/common';
 import { ImageInterface } from '../models/image-interface';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatStepperModule } from '@angular/material/stepper';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-deals',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatStepperModule,
+    FormsModule,
+  ],
   templateUrl: './edit-deals.component.html',
   styleUrl: './edit-deals.component.css',
-  standalone: true,
 })
 export class EditDealsComponent implements OnInit {
   dealForm: FormGroup;
@@ -33,14 +45,17 @@ export class EditDealsComponent implements OnInit {
   ) {
     this.dealId = +this.route.snapshot.paramMap.get('id')!;
     this.dealForm = this.formb.group({
-      name: ['', Validators.required],
-      slug: ['', Validators.required],
-      title: ['', Validators.required],
-      imageFile: [null],
+      dealInfo: this.formb.group({
+        name: ['', Validators.required],
+        slug: ['', Validators.required],
+        title: ['', Validators.required],
+        imageFile: [null],
+      }),
       hotels: this.formb.array([this.createHotelGroup()]),
     });
   }
 
+  isLinear = false;
   get hotels() {
     return this.dealForm.get('hotels') as FormArray;
   }
@@ -64,7 +79,7 @@ export class EditDealsComponent implements OnInit {
   ngOnInit(): void {
     this.dealService.findDeals(this.dealId).subscribe({
       next: (deal: DealsInterface) => {
-        this.dealForm.patchValue({
+        this.dealForm.get('dealInfo')?.patchValue({
           name: deal.name,
           slug: deal.slug,
           title: deal.title,
@@ -115,13 +130,13 @@ export class EditDealsComponent implements OnInit {
 
   onSubmit() {
     if (this.dealForm.invalid) return;
-
+    const dealInfo = this.dealForm.value.dealInfo;
     const dealData: DealsInterface = {
       id: this.dealId,
-      name: this.dealForm.value.name,
-      slug: this.dealForm.value.slug,
-      title: this.dealForm.value.title,
-      hotels: this.dealForm.value.hotels,
+      name: dealInfo.name,
+      slug: dealInfo.slug,
+      title: dealInfo.title,
+      hotels: dealInfo.hotels,
     };
 
     this.dealService.updateDeals(this.dealId, dealData).subscribe({
