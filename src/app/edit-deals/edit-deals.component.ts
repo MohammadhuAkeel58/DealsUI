@@ -51,11 +51,10 @@ export class EditDealsComponent implements OnInit {
         title: ['', Validators.required],
         imageFile: [null],
       }),
-      hotels: this.formb.array([this.createHotelGroup()]),
+      hotels: this.formb.array([]),
     });
   }
 
-  isLinear = false;
   get hotels() {
     return this.dealForm.get('hotels') as FormArray;
   }
@@ -136,7 +135,7 @@ export class EditDealsComponent implements OnInit {
       name: dealInfo.name,
       slug: dealInfo.slug,
       title: dealInfo.title,
-      hotels: dealInfo.hotels,
+      hotels: this.dealForm.value.hotels,
     };
 
     this.dealService.updateDeals(this.dealId, dealData).subscribe({

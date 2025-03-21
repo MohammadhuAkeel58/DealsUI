@@ -126,12 +126,8 @@
 
 <div class="container">
   <div class="card shadow-lg p-4">
-    <button mat-raised-button (click)="isLinear = !isLinear" class="mb-3">
-      {{ !isLinear ? "Enable Linear Mode" : "Disable Linear Mode" }}
-    </button>
-
     <form [formGroup]="dealForm">
-      <mat-stepper [linear]="isLinear" #stepper>
+      <mat-stepper #stepper>
         <mat-step [stepControl]="dealForm.get('dealInfo')!">
           <ng-template matStepLabel>Deal Information</ng-template>
           <div formGroupName="dealInfo">

@@ -45,12 +45,6 @@ export class DealService {
       .pipe(catchError(this.errorHandler));
   }
 
-  createHotels(hotel: HotelInterface): Observable<any> {
-    return this.httpClient
-      .post('http://localhost:5011/api/hotel', hotel, this.httpOptions)
-      .pipe(catchError(this.errorHandler));
-  }
-
   findDeals(id: number): Observable<any> {
     return this.httpClient
       .get(`${this.apiURL}/${id}`)
