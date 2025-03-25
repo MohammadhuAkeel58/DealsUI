@@ -16,6 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatStepperModule } from '@angular/material/stepper';
 import { FormsModule } from '@angular/forms';
+import { VideoInterface } from '../models/video-interface';
 
 @Component({
   selector: 'app-edit-deals',
@@ -35,6 +36,8 @@ export class EditDealsComponent implements OnInit {
   dealForm: FormGroup;
   dealId: number;
   selectedFile: File | null = null;
+  videoFile: File | null = null;
+  videoPreview: string | null = null;
   imagePreview: string | null = null;
 
   constructor(
@@ -50,6 +53,8 @@ export class EditDealsComponent implements OnInit {
         slug: ['', Validators.required],
         title: ['', Validators.required],
         imageFile: [null],
+        videoFile: [null],
+        videoAltText: ['', Validators.required],
       }),
       hotels: this.formb.array([]),
     });
@@ -82,6 +87,7 @@ export class EditDealsComponent implements OnInit {
           name: deal.name,
           slug: deal.slug,
           title: deal.title,
+          videoAltText: deal.videoAltText,
         });
 
         if (deal.hotels) {
@@ -90,6 +96,10 @@ export class EditDealsComponent implements OnInit {
 
         this.imagePreview = deal.image
           ? `http://localhost:5011${deal.image}`
+          : null;
+
+        this.videoPreview = deal.video
+          ? `http://localhost:5011${deal.video}`
           : null;
       },
       error: (err) => console.error('Error fetching deal:', err),
@@ -127,6 +137,33 @@ export class EditDealsComponent implements OnInit {
     });
   }
 
+  onVideoSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      if (!file.type.startsWith('video/')) {
+        this.videoFile = null;
+        this.videoPreview = null;
+        this.dealForm
+          .get('dealInfo.videoFile')
+          ?.setErrors({ invalidType: true });
+        return;
+      }
+      this.videoFile = file;
+      this.videoPreview = URL.createObjectURL(file);
+      this.dealForm.get('dealInfo.videoFile')?.setValue(file);
+    }
+    const videoData: VideoInterface = {
+      id: this.dealId,
+      videoFile: this.videoFile || undefined,
+    };
+    this.dealService.updateVideo(this.dealId, videoData).subscribe({
+      next: (response) => {
+        console.log('Video Updated:', response);
+      },
+      error: (err) => console.error('Error updating deal:', err),
+    });
+  }
+
   onSubmit() {
     if (this.dealForm.invalid) return;
     const dealInfo = this.dealForm.value.dealInfo;
@@ -135,6 +172,8 @@ export class EditDealsComponent implements OnInit {
       name: dealInfo.name,
       slug: dealInfo.slug,
       title: dealInfo.title,
+      videoAltText: dealInfo.videoAltText,
+
       hotels: this.dealForm.value.hotels,
     };
 

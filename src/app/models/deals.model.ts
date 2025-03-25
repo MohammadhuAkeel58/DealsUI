@@ -5,6 +5,9 @@ export interface DealsInterface {
   title: string;
   image?: string;
   imageFile?: File;
+  video?: string;
+  videoFile?: File;
+  videoAltText?: string;
   hotels: HotelInterface[];
 }
 export interface HotelInterface {

@@ -37,6 +37,8 @@ export class CreateDealComponent {
 
   selectedFile: File | null = null;
   imagePreview: string | null = null;
+  videoFile: File | null = null;
+  videoPreview: string | null = null;
 
   constructor(
     private formb: FormBuilder,
@@ -49,6 +51,8 @@ export class CreateDealComponent {
         slug: ['', Validators.required],
         title: ['', Validators.required],
         imageFile: [null],
+        videoFile: [null],
+        videoAltText: ['', Validators.required],
       }),
       hotels: this.formb.array([this.createHotelGroup()]),
     });
@@ -84,7 +88,9 @@ export class CreateDealComponent {
       if (!file.type.startsWith('image/')) {
         this.selectedFile = null;
         this.imagePreview = null;
-        this.dealForm.get('imageFile')?.setErrors({ invalidType: true });
+        this.dealForm
+          .get('dealInfo.imageFile')
+          ?.setErrors({ invalidType: true });
         return;
       }
 
@@ -98,6 +104,23 @@ export class CreateDealComponent {
     }
   }
 
+  onVideoSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      if (!file.type.startsWith('video/')) {
+        this.videoFile = null;
+        this.videoPreview = null;
+        this.dealForm
+          .get('dealInfo.videoFile')
+          ?.setErrors({ invalidType: true });
+        return;
+      }
+      this.videoFile = file;
+      this.videoPreview = URL.createObjectURL(file);
+      this.dealForm.get('dealInfo.videoFile')?.setValue(file);
+    }
+  }
+
   onSubmit() {
     if (this.dealForm.invalid) return;
     const dealInfo = this.dealForm.value.dealInfo;
@@ -106,7 +129,9 @@ export class CreateDealComponent {
       name: dealInfo.name,
       slug: dealInfo.slug,
       title: dealInfo.title,
+      videoAltText: dealInfo.videoAltText,
       imageFile: this.selectedFile || undefined,
+      videoFile: this.videoFile || undefined,
       hotels: this.dealForm.value.hotels,
     };
 

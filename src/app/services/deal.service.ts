@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { DealsInterface, HotelInterface } from '../models/deals.model';
 import { ImageInterface } from '../models/image-interface';
+import { VideoInterface } from '../models/video-interface';
 
 @Injectable({
   providedIn: 'root',
@@ -26,9 +27,14 @@ export class DealService {
     dealData.append('name', deal.name);
     dealData.append('slug', deal.slug);
     dealData.append('title', deal.title);
+    dealData.append('videoAltText', deal.videoAltText || '');
 
     if (deal.imageFile) {
       dealData.append('imageFile', deal.imageFile);
+    }
+
+    if (deal.videoFile) {
+      dealData.append('videoFile', deal.videoFile);
     }
     if (deal.hotels) {
       deal.hotels.forEach((hotel, index) => {
@@ -66,6 +72,21 @@ export class DealService {
 
     return this.httpClient
       .put(`${this.apiURL}/update/${id}`, imageData, this.httpOptions)
+      .pipe(catchError(this.errorHandler));
+  }
+
+  updateVideo(id: number, video: VideoInterface): Observable<any> {
+    const videoData = new FormData();
+
+    if (video.videoAltText) {
+      videoData.append('videoAltText', video.videoAltText);
+    }
+    if (video.videoFile) {
+      videoData.append('videoFile', video.videoFile);
+    }
+
+    return this.httpClient
+      .put(`${this.apiURL}/video/${id}`, videoData, this.httpOptions)
       .pipe(catchError(this.errorHandler));
   }
 

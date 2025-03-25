@@ -21,6 +21,7 @@
           <th>Slug</th>
           <th>Title</th>
           <th>Image</th>
+          <th>Video</th>
           <th>Edit</th>
           <th>Delete</th>
         </tr>
@@ -36,8 +37,18 @@
               [src]="'http://localhost:5011' + deal.image"
               alt="{{ deal.title }}"
               class="img-fluid"
-              style="height: 50px; width: 50px; object-fit: cover"
+              style="height: 100px; width: 200px; object-fit: cover"
             />
+          </td>
+          <td>
+            <video
+              *ngIf="deal.video"
+              [src]="'http://localhost:5011' + deal.video"
+              [attr.alt]="deal.videoAltText"
+              class="img-fluid"
+              style="height: 100px; width: 200px; object-fit: cover"
+              controls
+            ></video>
           </td>
           <td>
             <button
