@@ -53,8 +53,10 @@ export class EditDealsComponent implements OnInit {
         slug: ['', Validators.required],
         title: ['', Validators.required],
         imageFile: [null],
-        videoFile: [null],
-        videoAltText: ['', Validators.required],
+        videoInfo: this.formb.group({
+          videoFile: [null],
+          videoAltText: ['', Validators.required],
+        }),
       }),
       hotels: this.formb.array([]),
     });
@@ -87,7 +89,9 @@ export class EditDealsComponent implements OnInit {
           name: deal.name,
           slug: deal.slug,
           title: deal.title,
-          videoAltText: deal.videoAltText,
+          videoInfo: {
+            videoAltText: deal.videoAltText,
+          },
         });
 
         if (deal.hotels) {
@@ -144,13 +148,13 @@ export class EditDealsComponent implements OnInit {
         this.videoFile = null;
         this.videoPreview = null;
         this.dealForm
-          .get('dealInfo.videoFile')
+          .get('dealInfo.videoInfo.videoFile')
           ?.setErrors({ invalidType: true });
         return;
       }
       this.videoFile = file;
       this.videoPreview = URL.createObjectURL(file);
-      this.dealForm.get('dealInfo.videoFile')?.setValue(file);
+      this.dealForm.get('dealInfo.videoInfo.videoFile')?.setValue(file);
     }
     const videoData: VideoInterface = {
       id: this.dealId,
@@ -172,7 +176,7 @@ export class EditDealsComponent implements OnInit {
       name: dealInfo.name,
       slug: dealInfo.slug,
       title: dealInfo.title,
-      videoAltText: dealInfo.videoAltText,
+      videoAltText: dealInfo.videoInfo.videoAltText,
 
       hotels: this.dealForm.value.hotels,
     };

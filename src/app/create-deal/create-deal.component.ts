@@ -51,17 +51,15 @@ export class CreateDealComponent {
         slug: ['', Validators.required],
         title: ['', Validators.required],
         imageFile: [null],
-        videoFile: [null],
-        videoAltText: ['', Validators.required],
+        videoInfo: this.formb.group({
+          videoFile: [null],
+          videoAltText: ['', Validators.required],
+        }),
       }),
       hotels: this.formb.array([this.createHotelGroup()]),
     });
   }
   isLinear = false;
-
-  get dealInfoFormGroup(): FormGroup {
-    return this.dealForm.get('dealInfo') as FormGroup;
-  }
 
   get hotels() {
     return this.dealForm.get('hotels') as FormArray;
@@ -111,13 +109,13 @@ export class CreateDealComponent {
         this.videoFile = null;
         this.videoPreview = null;
         this.dealForm
-          .get('dealInfo.videoFile')
+          .get('dealInfo.videoInfo.videoFile')
           ?.setErrors({ invalidType: true });
         return;
       }
       this.videoFile = file;
       this.videoPreview = URL.createObjectURL(file);
-      this.dealForm.get('dealInfo.videoFile')?.setValue(file);
+      this.dealForm.get('dealInfo.videoInfo.videoFile')?.setValue(file);
     }
   }
 
@@ -129,7 +127,7 @@ export class CreateDealComponent {
       name: dealInfo.name,
       slug: dealInfo.slug,
       title: dealInfo.title,
-      videoAltText: dealInfo.videoAltText,
+      videoAltText: dealInfo.videoInfo.videoAltText,
       imageFile: this.selectedFile || undefined,
       videoFile: this.videoFile || undefined,
       hotels: this.dealForm.value.hotels,

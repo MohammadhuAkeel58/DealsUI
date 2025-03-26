@@ -133,7 +133,7 @@
       {{ !isLinear ? "Enable Linear Mode" : "Disable Linear Mode" }}
     </button>
 
-    <form [formGroup]="dealForm">
+    <form [formGroup]="dealForm" (ngSubmit)="onSubmit()">
       <mat-stepper [linear]="isLinear" #stepper>
         <mat-step [stepControl]="dealForm.get('dealInfo')!">
           <ng-template matStepLabel>Deal Information</ng-template>
@@ -169,61 +169,67 @@
             </div>
 
             <div class="mb-3">
-              <label for="image" class="form-label fw-bold">Image:</label>
-              <input
-                type="file"
-                class="form-control"
-                id="image"
-                accept="image/*"
-                (change)="onFileSelected($event)"
-              />
-            </div>
-            <div class="mb-3 text-center" *ngIf="imagePreview">
-              <img
-                [src]="imagePreview"
-                alt="Selected Image Preview"
-                class="img-thumbnail"
-                style="max-width: 200px; max-height: 200px"
-              />
-            </div>
-            <div class="mb-3">
-              <label for="video" class="form-label fw-bold">Video:</label>
-              <input
-                type="file"
-                class="form-control"
-                id="video"
-                accept="video/*"
-                (change)="onVideoSelected($event)"
-              />
-            </div>
-            <div class="mb-3">
-              <label for="videoAltText" class="form-label fw-bold"
-                >Video Alt Text:</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="videoAltText"
-                formControlName="videoAltText"
-                placeholder="Describe this video"
-              />
-            </div>
-            <div class="mb-3 text-center" *ngIf="videoPreview">
-              <video
-                [src]="videoPreview"
-                controls
-                class="img-thumbnail"
-                style="max-width: 300px; max-height: 300px"
-                [attr.alt]="
-                  dealInfoFormGroup.get('videoAltText')?.value ||
-                  'Video Preview'
-                "
-              ></video>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="image" class="form-label fw-bold">Image:</label>
+                  <input
+                    type="file"
+                    class="form-control"
+                    id="image"
+                    accept="image/*"
+                    (change)="onFileSelected($event)"
+                  />
+                </div>
+                <div class="col-md-6" formGroupName="videoInfo">
+                  <label for="video" class="form-label fw-bold">Video:</label>
+                  <input
+                    type="file"
+                    class="form-control"
+                    id="video"
+                    accept="video/*"
+                    (change)="onVideoSelected($event)"
+                  />
+                </div>
+              </div>
+
+              <div class="row g-3 mt-2">
+                <div class="col-md-6" *ngIf="imagePreview">
+                  <img
+                    [src]="imagePreview"
+                    alt="Selected Image Preview"
+                    class="img-thumbnail w-100"
+                    style="max-height: 200px"
+                  />
+                </div>
+                <div
+                  class="col-md-6"
+                  *ngIf="videoPreview"
+                  formGroupName="videoInfo"
+                >
+                  <video
+                    [src]="videoPreview"
+                    controls
+                    class="img-thumbnail w-100"
+                    style="max-height: 200px"
+                    [attr.alt]="
+                      dealForm.get('dealInfo.videoInfo.videoAltText')?.value ||
+                      'Video Preview'
+                    "
+                  ></video>
+                  <input
+                    type="text"
+                    class="form-control mt-2"
+                    id="videoAltText"
+                    formControlName="videoAltText"
+                    placeholder="Describe this video"
+                  />
+                </div>
+              </div>
             </div>
           </div>
 
           <div class="text-end">
-            <button mat-button matStepperNext>Next</button>
+            <button mat-button matStepperNext type="button">Next</button>
           </div>
         </mat-step>
 
@@ -283,8 +289,8 @@
           </div>
 
           <div class="text-end">
-            <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext>Next</button>
+            <button mat-button matStepperPrevious type="button">Back</button>
+            <button mat-button matStepperNext type="button">Next</button>
           </div>
         </mat-step>
 
@@ -293,7 +299,7 @@
           <p class="text-center">Review your details and submit the deal.</p>
           <div class="text-center">
             <button mat-button matStepperPrevious>Back</button>
-            <button mat-button (click)="onSubmit()">Submit</button>
+            <button mat-button type="submit">Submit</button>
           </div>
         </mat-step>
       </mat-stepper>
